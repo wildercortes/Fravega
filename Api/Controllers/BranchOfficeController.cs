@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace Api.Controllers
 {
-    [Route("v{version:apiVersion}/BranchOffice")]
+    [Route("v{version:apiVersion}/Sucursales")]
     [ApiVersion("1.0")]
     [ApiController]
     public class BranchOfficeController : Controller
@@ -25,7 +25,7 @@ namespace Api.Controllers
         }
 
 
-        [HttpGet("getBranchOfficeById")]
+        [HttpGet("ObtenerSucursalPorId")]
         public BranchOfficeDTO GetBranchOfficeById([FromQuery] GetBranchOfficeByIdRequest request)
         {
             if (UseFull.IsInvalidId(request.Id))
@@ -39,7 +39,7 @@ namespace Api.Controllers
             return UseFull.BecomeEntityIntoDTO(Entity);
         }
 
-        [HttpGet("getBranchOfficeByLatAndLog")]
+        [HttpGet("ObtenerSucursalMasCercana")]
         public BranchOfficeDTO GetBranchOfficeByLatAndLog([FromQuery] GetBranchOfficeByLatAndLogRequest request)
         {
             if (UseFull.IsInvalidLongOrLat(request.Longitud, request.Latitud))
@@ -53,7 +53,7 @@ namespace Api.Controllers
         }
 
 
-        [HttpPost("addBranchOffice")]
+        [HttpPost("CrearSucursal")]
         public IActionResult AddBranchOffice([FromBody] AddBranchOfficeRequest request)
         {
             if (string.IsNullOrEmpty(request.Direccion))

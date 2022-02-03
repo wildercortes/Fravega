@@ -27,6 +27,9 @@ namespace Data.Repositories
         public List<BranchOffice> GetAllBranchOffice()
             => dataContext.Sucursales.ToList();
 
+        public int CountAllBranchOffice()
+           => GetAllBranchOffice().Count();
+
 
     }
 }
