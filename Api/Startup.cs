@@ -33,14 +33,6 @@ namespace Api
                .UseSqlServer(Configuration.GetConnectionString("Sql"),
                opt => opt.CommandTimeout((int)TimeSpan.FromMinutes(5).TotalSeconds)));
 
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy(corsPolicyName,
-            //        builder => builder
-            //            .AllowAnyOrigin()
-            //            .AllowAnyMethod()
-            //            .AllowAnyHeader());
-            //});
 
             services.AddScoped<IBranchOfficeRepository, BranchOfficeRepository>();
             services.AddControllers();

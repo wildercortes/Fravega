@@ -7,6 +7,15 @@ namespace Core.Validators
     {
         public GetBranchOfficeByLatAndLogRequestValidator()
         {
+            RuleFor(x => x.Latitud)
+              .NotEmpty()
+              .NotNull()
+              .WithMessage("Debe ingresar una latitud valida");
+
+            RuleFor(x => x.Latitud)
+              .NotEmpty()
+              .NotNull()
+              .WithMessage("Debe ingresar una longitud valida");
 
         }
 
