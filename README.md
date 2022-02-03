@@ -7,7 +7,7 @@ Pasos:
 
 2 - apuntar desde el appsettings a un servidor sql server para crear la base de datos en base a las migraciones.
 
-3 - correr el comando Update-Database para correr todas las migraciones y crear la Base de datos con las especificaciones solicitadas.
+3 - correr el comando Update-Database o levantar la api para correr todas las migraciones y crear la Base de datos con las especificaciones solicitadas.
 
 4 - Ejecutar la aplicacion y probarla para comprobar si cumple o no los requisitos solicitados.
 
