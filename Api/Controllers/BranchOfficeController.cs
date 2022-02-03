@@ -36,7 +36,7 @@ namespace Api.Controllers
         [HttpGet("ObtenerSucursalPorId")]
         public BranchOfficeDTO GetBranchOfficeById([FromQuery] GetBranchOfficeByIdRequest request)
         {
-            if (UseFull.IsInvalidId(request.Id))
+            if (Validations.IsInvalidId(request.Id))
                 throw new BusinessException("Id no puede ser 0.", BusinessExceptionCode.RequireId);
 
             var Entity = branchOfficeRepository.GetBranchOfficeById(request.Id);
@@ -44,23 +44,23 @@ namespace Api.Controllers
             if (Entity == null)
                 throw new BusinessException("Sucursal no existe.", BusinessExceptionCode.BranchOfficeNotExist);
 
-            return UseFull.BecomeEntityIntoDTO(Entity);
+            return new BranchOfficeDTO(Entity);
         }
 
         [HttpGet("ObtenerSucursalMasCercana")]
         public BranchOfficeDTO GetBranchOfficeByLatAndLog([FromQuery] GetBranchOfficeByLatAndLogRequest request)
         {
-            if (UseFull.ValidateLatitude(request.Latitud))
+            if (Validations.ValidateLatitude(request.Latitud))
                 throw new BusinessException("La latitud debe ser un numero mayor que -90 o menor que 90.", BusinessExceptionCode.LatInvalid);
 
-            if (UseFull.ValidateLongitude(request.Longitud))
+            if (Validations.ValidateLongitude(request.Longitud))
                 throw new BusinessException("La longitud debe ser un numero mayor que -180 o menor que 180", BusinessExceptionCode.LongInvalid);
 
             var branchOffices = branchOfficeRepository.GetAllBranchOffice();
 
             var nearestBranchOffice = GetNearestBranchOffice(branchOffices, request);
 
-            return UseFull.BecomeEntityIntoDTO(nearestBranchOffice);
+            return new BranchOfficeDTO(nearestBranchOffice);
         }
 
 
@@ -70,16 +70,21 @@ namespace Api.Controllers
             if (string.IsNullOrEmpty(request.Direccion))
                 throw new BusinessException("Direccion requerida.", BusinessExceptionCode.AddressRequired);
 
-            if (UseFull.ValidateLatitude(request.Latitud))
+            if (Validations.ValidateLatitude(request.Latitud))
                 throw new BusinessException("La latitud debe ser un numero mayor que -90 o menor que 90.", BusinessExceptionCode.LatInvalid);
 
 
-            if (UseFull.ValidateLongitude(request.Longitud))
+            if (Validations.ValidateLongitude(request.Longitud))
                 throw new BusinessException("La longitud debe ser un numero mayor que -180 o menor que 180", BusinessExceptionCode.LongInvalid);
 
             try
             {
-                var Entity = UseFull.BecomeRequestIntoEntity(request);
+                var Entity = new BranchOffice
+                {
+                    Direccion = request.Direccion,
+                    Longitud = request.Longitud,
+                    Latitud = request.Latitud
+                };
 
                 branchOfficeRepository.Add(Entity);
                 return Ok();
