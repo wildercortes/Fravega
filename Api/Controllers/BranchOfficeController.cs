@@ -24,6 +24,14 @@ namespace Api.Controllers
             this.branchOfficeRepository = branchOfficeRepository;
         }
 
+        [HttpGet("ObtenerTodasLasSucursales")]
+        public List<BranchOfficeDTO> GetAllBranchOffice()
+        {
+            var branchOffices = branchOfficeRepository.GetAllBranchOffice().Select(x => new BranchOfficeDTO(x)).ToList();
+
+            return branchOffices;
+        }
+
 
         [HttpGet("ObtenerSucursalPorId")]
         public BranchOfficeDTO GetBranchOfficeById([FromQuery] GetBranchOfficeByIdRequest request)
@@ -42,8 +50,11 @@ namespace Api.Controllers
         [HttpGet("ObtenerSucursalMasCercana")]
         public BranchOfficeDTO GetBranchOfficeByLatAndLog([FromQuery] GetBranchOfficeByLatAndLogRequest request)
         {
-            if (UseFull.IsInvalidLongOrLat(request.Longitud, request.Latitud))
-                throw new BusinessException("Longitud o latitud invalidos.", BusinessExceptionCode.LongOrLatInvalid);
+            if (UseFull.ValidateLatitude(request.Latitud))
+                throw new BusinessException("La latitud debe ser un numero mayor que -90 o menor que 90.", BusinessExceptionCode.LatInvalid);
+
+            if (UseFull.ValidateLongitude(request.Longitud))
+                throw new BusinessException("La longitud debe ser un numero mayor que -180 o menor que 180", BusinessExceptionCode.LongInvalid);
 
             var branchOffices = branchOfficeRepository.GetAllBranchOffice();
 
@@ -59,8 +70,12 @@ namespace Api.Controllers
             if (string.IsNullOrEmpty(request.Direccion))
                 throw new BusinessException("Direccion requerida.", BusinessExceptionCode.AddressRequired);
 
-            if (UseFull.IsInvalidLongOrLat(request.Longitud, request.Latitud))
-                throw new BusinessException("Longitud o latitud invalidos.", BusinessExceptionCode.LongOrLatInvalid);
+            if (UseFull.ValidateLatitude(request.Latitud))
+                throw new BusinessException("La latitud debe ser un numero mayor que -90 o menor que 90.", BusinessExceptionCode.LatInvalid);
+
+
+            if (UseFull.ValidateLongitude(request.Longitud))
+                throw new BusinessException("La longitud debe ser un numero mayor que -180 o menor que 180", BusinessExceptionCode.LongInvalid);
 
             try
             {
@@ -81,7 +96,7 @@ namespace Api.Controllers
         {
             var BranchOfficeDistanceList = GetBranchOfficeDistanceList(branchOfficeList, destination);
 
-            var branchOfficeDistance = BranchOfficeDistanceList.OrderByDescending(x => x.Distance).First();
+            var branchOfficeDistance = BranchOfficeDistanceList.OrderBy(x => x.Distance).First();
 
             var branchOffice = branchOfficeList.Where(x => x.Id == branchOfficeDistance.Id).FirstOrDefault();
 

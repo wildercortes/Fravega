@@ -4,8 +4,12 @@
     {
         NotDefined,
         RequireId,
+        LatInvalid,
+        LongInvalid,
         AddressRequired,
         LongOrLatInvalid,
+        LongitudeOutRange,
+        LatitudeOutRange,
         BranchOfficeNotExist,
         BranchOfficeCreationError
     }

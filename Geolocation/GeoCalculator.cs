@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Exceptions;
+using System;
 
 namespace Geolocation
 {
@@ -22,9 +23,9 @@ namespace Geolocation
         public static double GetDistance(double originLatitude, double originLongitude, double destinationLatitude, double destinationLongitude, int decimalPlaces = 1, DistanceUnit distanceUnit = DistanceUnit.Miles)
         {
             if (!CoordinateValidator.Validate(originLatitude, originLongitude))
-                throw new ArgumentException("Invalid origin coordinates supplied.");
+                throw new BusinessException("La longitud debe ser un numero entre -180 y 180.", BusinessExceptionCode.LongitudeOutRange);
             if (!CoordinateValidator.Validate(destinationLatitude, destinationLongitude))
-                throw new ArgumentException("Invalid destination coordinates supplied.");
+                throw new BusinessException("La latitud debe ser un numero entre -90 y 90.", BusinessExceptionCode.LatitudeOutRange);
 
             double radius = GetRadius(distanceUnit);
             return Math.Round(
